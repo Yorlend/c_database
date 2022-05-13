@@ -7,5 +7,6 @@
 #define MEM_ERR         3       // Ошибка выделения памяти
 #define INVALID_PARAMS  4       // Некорректные аргументы функции
 #define BAD_INPUT       5       // Некорректный ввод
+#define EMPTY_LIST_ERR  6       // Удаление из пустого списка
 
 #endif
