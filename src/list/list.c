@@ -1,8 +1,7 @@
-#include "list.h"
-
 #include <stdlib.h>
 #include "error_codes.h"
 #include "mem_track/memtrack.h"
+#include "list.h"
 
 node_t* make_node(const product_t* product)
 {
@@ -19,25 +18,36 @@ node_t* make_node(const product_t* product)
     return node;
 }
 
-list_t init_list()
+list_t init_list(void)
 {
     return (list_t) { .head = NULL, .tail = NULL };
 }
 
+size_t list_size(const list_t* list)
+{
+    size_t res = 0;
+
+    if (list != NULL)
+        for (node_t* node = list->head; node != NULL; node = node->next)
+            res++;
+
+    return res;
+}
+
 int push_back(list_t* dst, const product_t* src)
 {
-    node_t* node = make_node(src);
+    if (dst == NULL || src == NULL)
+        return INVALID_PARAMS;
 
+    node_t* node = make_node(src);
     if (!node)
         return MEM_ERR;
 
     if (dst->tail == NULL)
-    {
         dst->head = node;
-        dst->tail = node;
-    }
     else
         dst->tail->next = node;
+    dst->tail = node;
 
     return SUCCESS;
 }
@@ -53,9 +63,31 @@ int erase(list_t* dst, node_t* node)
         head++;
 
     head->next = node->next;
-    free(node);
 
+    free_product(&node->data);
+    free(node);
     track_free();
+
+    return SUCCESS;
+}
+
+int clear(list_t* dst)
+{
+    if (dst == NULL)
+        return INVALID_PARAMS;
+    
+    while (dst->head != NULL)
+    {
+        node_t* next = dst->head->next;
+
+        free_product(&dst->head->data);
+        free(dst->head);
+        track_free();
+
+        dst->head = next;
+    }
+
+    dst->tail = NULL;
 
     return SUCCESS;
 }

@@ -15,5 +15,18 @@ typedef struct
     char* worker;
 } product_t;
 
+/**
+ * @brief Создаёт пустую структуру
+ * 
+ * @return product_t продукт
+ */
+product_t init_product(void);
+
+/**
+ * @brief Очищает память под структуру
+ * 
+ * @param product товар
+ */
+void free_product(product_t* product);
 
 #endif

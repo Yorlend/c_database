@@ -28,7 +28,15 @@ node_t* make_node(const product_t* product);
  * 
  * @return list_t 
  */
-list_t init_list();
+list_t init_list(void);
+
+/**
+ * @brief Возвращает число элементов в списке
+ * 
+ * @param list список
+ * @return size_t 
+ */
+size_t list_size(const list_t* list);
 
 /**
  * @brief Вставка в хвост списка
@@ -47,5 +55,13 @@ int push_back(list_t* dst, const product_t* src);
  * @return int код ошибки
  */
 int erase(list_t* dst, node_t* node);
+
+/**
+ * @brief Удаление всех элементов списка
+ * 
+ * @param dst список, подлежащий очистке
+ * @return int код ошибки
+ */
+int clear(list_t* dst);
 
 #endif

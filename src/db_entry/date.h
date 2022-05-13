@@ -25,7 +25,7 @@ date_t init_date();
  * @param src строка, содержащая дату в формате ДД.ММ.ГГГГ
  * @return int код ошибки
  */
-int parse_date(date_t* dst, char* src);
+int parse_date(date_t* dst, const char* src);
 
 /**
  * @brief Преобразует дату в строку

@@ -1,16 +1,25 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "mem_track/memtrack.h"
-#include "db_entry/date.h"
+#include "database/database.h"
+#include "database/command.h"
 #include "io/userio.h"
 
 int main(void)
 {
-    char* date = NULL;
-    size_t len = 0;
+    char* buffer = NULL;
+    size_t size = 0;
+    
+    while (getline_win(&buffer, &size, stdin) > 0)
+    {
+        int status = db_cmd(buffer);
+        if (status != 0)
+            printf("status: %d\n", status);
+    }
 
-    getline_win(&date, &len, stdin);
+    free(buffer);
+    track_free();
 
-    printf("ДАТА: %s\n", date);
-
+    db_clear();
     return 0;
 }

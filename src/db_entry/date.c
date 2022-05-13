@@ -10,7 +10,7 @@ date_t init_date()
     return (date_t) {.day = 0, .month = 0, .year = 0};
 }
 
-static int parse_day(date_t* dst, char** src)
+static int parse_day(date_t* dst, const char** src)
 {
     int day = 0;
     while (isdigit(**src))
@@ -29,7 +29,7 @@ static int parse_day(date_t* dst, char** src)
     return SUCCESS;
 }
 
-static int parse_month(date_t* dst, char** src)
+static int parse_month(date_t* dst, const char** src)
 {
     int month = 0;
     while (isdigit(**src))
@@ -48,7 +48,7 @@ static int parse_month(date_t* dst, char** src)
     return SUCCESS;
 }
 
-static int parse_year(date_t* dst, char** src)
+static int parse_year(date_t* dst, const char** src)
 {
     int year = 0;
     while (isdigit(**src))
@@ -65,7 +65,7 @@ static int parse_year(date_t* dst, char** src)
     return SUCCESS;
 }
 
-int parse_date(date_t* dst, char* src)
+int parse_date(date_t* dst, const char* src)
 {
     if (src == NULL || dst == NULL)
         return INVALID_PARAMS;

@@ -1,50 +1,50 @@
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include "error_codes.h"
+#include "mem_track/memtrack.h"
 #include "userio.h"
 
-#include <stdlib.h>
+#define BASE_BUFFER_SIZE 128
+#define DELTA_BUFFER_SIZE 128
 
-size_t getline_win(char** lineptr, size_t* n, FILE* stream) 
+ssize_t getline_win(char** lineptr, size_t* n, FILE* stream) 
 {
-    char* bufptr = NULL;
-    char* p = bufptr;
-    size_t size;
-    int c;
+    if (lineptr == NULL || stream == NULL || n == NULL)
+        return -1;
 
-    if (lineptr == NULL) {
-        return -1;
-    }
-    if (stream == NULL) {
-        return -1;
-    }
-    if (n == NULL) {
-        return -1;
-    }
-    bufptr = *lineptr;
-    size = *n;
+    char* bufptr = *lineptr;
+    size_t size = *n;
 
-    c = fgetc(stream);
-    if (c == EOF) {
+    int c = fgetc(stream);
+    if (c == EOF)
         return -1;
-    }
-    if (bufptr == NULL) {
-        bufptr = malloc(128);
-        if (bufptr == NULL) {
+
+    if (bufptr == NULL)
+    {
+        bufptr = malloc(BASE_BUFFER_SIZE);
+        if (bufptr == NULL)
             return -1;
-        }
-        size = 128;
+        track_malloc();
+        
+        size = BASE_BUFFER_SIZE;
     }
-    p = bufptr;
-    while(c != EOF) {
-        if ((p - bufptr) > (size - 1)) {
-            size = size + 128;
+
+    char* p = bufptr;
+    while(c != EOF)
+    {
+        if (p - bufptr > size - 1)
+        {
+            size += DELTA_BUFFER_SIZE;
             bufptr = realloc(bufptr, size);
-            if (bufptr == NULL) {
+            if (bufptr == NULL)
                 return -1;
-            }
+            track_realloc();
         }
         *p++ = c;
-        if (c == '\n') {
+        if (c == '\n')
             break;
-        }
+
         c = fgetc(stream);
     }
 
@@ -53,4 +53,28 @@ size_t getline_win(char** lineptr, size_t* n, FILE* stream)
     *n = size;
 
     return p - bufptr - 1;
+}
+
+char* dup_string(const char* str)
+{
+    char* res = malloc(strlen(str) + 1);
+    if (res != NULL)
+    {
+        track_malloc();
+        strcpy(res, str);
+    }
+    return res;
+}
+
+int parse_int(int* res, const char* src)
+{
+    if (res == NULL || src == NULL)
+        return INVALID_PARAMS;
+
+    for (*res = 0; isdigit(*src); src++)
+        *res = *res * 10 + *src - '0';
+
+    if (*src != '\0')
+        return BAD_INPUT;
+    return SUCCESS;
 }
