@@ -182,6 +182,124 @@ int db_select(const char* fields, const cond_array_t* conds)
     return SUCCESS;
 }
 
+int db_delete(const cond_array_t* conds)
+{
+    if (conds == NULL)
+        return INVALID_PARAMS;
+    
+    size_t count = 0;
+    int status = SUCCESS;
+    for (node_t* node = entry_list.head; status == SUCCESS && node != NULL;)
+    {
+        bool match_flag = true;
+        for (size_t i = 0; status == SUCCESS && match_flag && i < conds->size; i++)
+        {
+            bool tmp;
+            status = cond_match(&tmp, conds->data + i, &node->data);
+            if (status == SUCCESS)
+                match_flag = match_flag && tmp;
+        }
+
+        // удалить из списка товар подходящий по условиям поиска
+        if (status == SUCCESS && match_flag)
+        {
+            node_t* next = node->next;
+            status = erase(&entry_list, node);
+            node = next;
+            count++;
+        }
+        else
+            node = node->next;
+    }
+
+    if (status == SUCCESS)
+        printf("delete: %zu\n", count);
+
+    return SUCCESS;
+}
+
+static int cmp_by_field(bool *eql, const char* field, const product_t* product1, const product_t* product2)
+{
+    if (strncmp(field, "comes", 5) == 0)
+        *eql = date_eq(&product1->comes, &product2->comes);
+    else if (strncmp(field, "sender", 6) == 0)
+        *eql = strcmp(product1->sender, product2->sender) == 0;
+    else if (strncmp(field, "name", 4) == 0)
+        *eql = strcmp(product1->name, product2->name) == 0;
+    else if (strncmp(field, "weight", 6) == 0)
+        *eql = product1->weight == product2->weight;
+    else if (strncmp(field, "count", 5) == 0)
+        *eql = product1->count == product2->count;
+    else if (strncmp(field, "images", 6) == 0)
+        *eql = image_set_eq(&product1->images, &product2->images);
+    else if (strncmp(field, "worker", 6) == 0)
+        *eql = strcmp(product1->worker, product2->worker) == 0;
+    else
+        return UNKNOWN_FIELD;
+
+    return SUCCESS;
+}
+
+/**
+ * @brief Сравнивает два товара по переданным полям
+ * 
+ * @param eql true, если равны
+ * @param fields строка со списком полей в формате 'field1,field2,...'
+ * @param product1 
+ * @param product2 
+ * @return int код ошибки
+ */
+static int cmp_by_fields(bool *eql, const char* fields, const product_t* product1, const product_t* product2)
+{
+    *eql = true;
+    while (*eql)
+    {
+        bool tmp;
+        int status = cmp_by_field(&tmp, fields, product1, product2);
+        if (status != SUCCESS)
+            return status;
+        *eql = *eql && tmp;
+
+        fields = strchr(fields, ',');
+        if (fields == NULL)
+            break;
+        fields++;
+    }
+
+    return SUCCESS;
+}
+
+int db_unique(const char* fields)
+{
+    size_t count = 0;
+
+    int status = SUCCESS;
+    for (node_t* node1 = entry_list.head; status == SUCCESS && node1 != NULL;)
+    {
+        bool was_remove = false;
+        for (node_t* node2 = node1->next; status == SUCCESS && node2 != NULL; node2 = node2->next)
+        {
+            bool eql;
+            status = cmp_by_fields(&eql, fields, &node1->data, &node2->data);
+            if (status == SUCCESS && eql)
+            {
+                node_t* next = node1->next;
+                erase(&entry_list, node1);
+                node1 = next;
+                was_remove = true;
+                count++;
+                break;
+            }
+        }
+
+        if (!was_remove)
+            node1 = node1->next;
+    }
+
+    printf("uniq: %zu\n", count);
+    return status;
+}
+
 size_t db_rows_count(void)
 {
     return list_size(&entry_list);

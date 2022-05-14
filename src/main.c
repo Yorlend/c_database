@@ -18,6 +18,9 @@ int read_cmd_file(FILE* file)
     {
         while (buffer[strlen(buffer) - 1] == '\n')
             buffer[strlen(buffer) - 1] = '\0';
+        
+        if (strlen(buffer) == 0)
+            continue;
 
         status = db_cmd(buffer);
         if (status != 0)

@@ -18,12 +18,31 @@ int db_insert(const pair_array_t* pairs);
  * 
  * Найденные записи выводятся в стандартный поток вывода
  * 
- * @param fields строка в фрмате 'field1,field2,...'
+ * @param fields строка в формате 'field1,field2,...'
  * @param conds массив условий фильтрации
  * @param conds_size размер массива conds
  * @return int код ошибки
  */
 int db_select(const char* fields, const cond_array_t* conds);
+
+/**
+ * @brief Удаляет товары удовлетворяющие всем условиям
+ * 
+ * @param conds массив условий фильтрации
+ * @return int код ошибки
+ */
+int db_delete(const cond_array_t* conds);
+
+/**
+ * @brief Удаляет из БД дубликаты
+ * 
+ * Удаляет записи, значения всех указанных в команде полей
+ * в которых совпадает со значением полей в других записях
+ * 
+ * @param conds строка в формате 'field1,field2,...'
+ * @return int код ошибки
+ */
+int db_unique(const char* fields);
 
 /**
  * @brief Возвращает число обьектов в базе данных

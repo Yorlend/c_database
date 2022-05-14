@@ -56,11 +56,30 @@ int erase(list_t* dst, node_t* node)
 {
     if (dst->head == NULL)
         return EMPTY_LIST_ERR;
+    
+    if (dst->head == dst->tail && dst->head == node)
+    {
+        free_product(&node->data);
+        free(node);
+        track_free();
+
+        dst->head = NULL;
+        dst->tail = NULL;
+        return SUCCESS;
+    }
+    else if (dst->head == node)
+    {
+        dst->head = dst->head->next;
+        free_product(&node->data);
+        free(node);
+        track_free();
+        return SUCCESS;
+    }
 
     node_t* head = dst->head;
 
     while (head->next != node)
-        head++;
+        head = head->next;
 
     head->next = node->next;
 

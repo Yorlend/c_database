@@ -66,7 +66,7 @@ static int parse_year(date_t* dst, const char** src)
         (*src)++;
     }
 
-    if (year < 1 || year > 2022)
+    if (year < 1)
         return BAD_INPUT;
     
     dst->year = year;
