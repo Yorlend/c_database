@@ -4,6 +4,8 @@
 #include "pair.h"
 #include <stddef.h>
 
+#define DELIM ","
+
 typedef struct
 {
     pair_t* data;
