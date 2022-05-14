@@ -22,7 +22,7 @@ pair_t init_pair();
  * @param src источник - строка
  * @return int код ошибки
  */
-int parse_pair(pair_t* dst, const char* src);
+int parse_pair(pair_t* dst, char* src);
 
 /**
  * @brief Преобразует пару в строку формата field=value
@@ -31,6 +31,6 @@ int parse_pair(pair_t* dst, const char* src);
  * @param src источник - пара
  * @return int код ошибки
  */
-int pair_to_str(char* dst, const pair_t* src);
+int pair_to_str(char** dst, const pair_t* src);
 
 #endif

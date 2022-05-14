@@ -12,7 +12,7 @@ pair_t init_pair()
     return (pair_t) { .field = NULL, .value = NULL };
 }
 
-int parse_pair(pair_t* dst, const char* src)
+int parse_pair(pair_t* dst, char* src)
 {
     if (src == NULL || dst == NULL)
         return INVALID_PARAMS;
@@ -22,8 +22,9 @@ int parse_pair(pair_t* dst, const char* src)
     if (delim == NULL)
         return BAD_INPUT;
 
-    dst->field = dup_nstring(src, delim - src);
-    dst->value = dup_string(delim + 1);
+    dst->field = src;
+    dst->value = delim + 1;
+    *delim = '\0';
 
     return SUCCESS;
 }
