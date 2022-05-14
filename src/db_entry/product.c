@@ -41,3 +41,11 @@ void free_product(product_t* product)
         *product = init_product();
     }
 }
+
+bool product_valid(const product_t* product)
+{
+    return product->sender != NULL &&
+        date_valid(&product->comes) &&
+        product->name != NULL &&
+        product->worker != NULL;
+}

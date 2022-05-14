@@ -43,14 +43,7 @@ bool cond_valid(const cond_t *cond);
  * @param str строка с условием
  * @return int код ошибки
  */
-int parse_cond(cond_t* cond, const char* str);
-
-/**
- * @brief Очищает память под структуру
- * 
- * @param cond структура условия
- */
-void free_cond(cond_t* cond);
+int parse_cond(cond_t* cond, char* str);
 
 /**
  * @brief Проверяет условие для товара

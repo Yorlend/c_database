@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 // длина строки с датой
-#define DATE_LEN 10
+#define DATE_LEN 12
 
 typedef struct
 {
@@ -39,5 +39,8 @@ int parse_date(date_t* dst, const char* src);
 int date_to_str(char* dst, const date_t* src);
 
 bool date_valid(const date_t* date);
+
+bool date_eq(const date_t* date1, const date_t* date2);
+bool date_lt(const date_t* date1, const date_t* date2);
 
 #endif

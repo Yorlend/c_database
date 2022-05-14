@@ -4,8 +4,6 @@
 #include "pair.h"
 #include <stddef.h>
 
-#define DELIM ","
-
 typedef struct
 {
     pair_t* data;
@@ -16,6 +14,13 @@ pair_array_t init_pair_array(void);
 
 void free_pair_array(pair_array_t* arr);
 
+/**
+ * @brief Разбирает строку на пары
+ * 
+ * @param arr результат
+ * @param str входная строка в формате 'field=value1,field=value2,...'
+ * @return int код ошибки
+ */
 int parse_pair_array(pair_array_t* arr, char* str);
 
 #endif

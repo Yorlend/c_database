@@ -48,4 +48,8 @@ int image_set_add(image_set_t* set, const char* option);
  */
 bool image_set_in(const image_set_t* src, const image_set_t* target);
 
+bool image_set_eq(const image_set_t* set1, const image_set_t* set2);
+
+void print_image_set(const image_set_t* set);
+
 #endif

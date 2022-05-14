@@ -10,6 +10,15 @@ date_t init_date()
     return (date_t) {.day = 0, .month = 0, .year = 0};
 }
 
+static int parse_quote(const char** str)
+{
+    if (**str != '\'')
+        return BAD_INPUT;
+    
+    (*str)++;
+    return SUCCESS;
+}
+
 static int parse_day(date_t* dst, const char** src)
 {
     int day = 0;
@@ -70,9 +79,11 @@ int parse_date(date_t* dst, const char* src)
     if (src == NULL || dst == NULL)
         return INVALID_PARAMS;
 
-    if (parse_day(dst, &src) == SUCCESS && 
+    if (parse_quote(&src) == SUCCESS &&
+        parse_day(dst, &src) == SUCCESS && 
         parse_month(dst, &src) == SUCCESS && 
-        parse_year(dst, &src) == SUCCESS)
+        parse_year(dst, &src) == SUCCESS &&
+        parse_quote(&src) == SUCCESS)
         return SUCCESS;
 
     return BAD_INPUT;
@@ -80,7 +91,7 @@ int parse_date(date_t* dst, const char* src)
 
 int date_to_str(char* dst, const date_t* src)
 {
-    snprintf(dst, DATE_LEN + 1, "%02d.%02d.%04d",
+    snprintf(dst, DATE_LEN + 1, "'%02d.%02d.%04d'",
         src->day, src->month, src->year);
 }
 
@@ -97,8 +108,8 @@ bool date_valid(const date_t* date)
     if (date->month < 1 || 12 < date->month)
         return false;
     
-    if (date->year < 1896 || 2021 < date->year)
-        return false;
+    // if (date->year < 1896 || 2021 < date->year)
+    //     return false;
 
     if (date->month == 2)
     {
@@ -116,4 +127,22 @@ bool date_valid(const date_t* date)
             return false;
 
     return true; 
+}
+
+bool date_eq(const date_t* date1, const date_t* date2)
+{
+    return date1->day == date2->day &&
+        date1->month == date2->month &&
+        date1->year == date2->year;
+}
+
+bool date_lt(const date_t* date1, const date_t* date2)
+{
+    if (date1->year == date2->year)
+    {
+        if (date1->month == date2->month)
+            return date1->day < date2->day;
+        return date1->month < date2->month;
+    }
+    return date1->year < date2->year;
 }

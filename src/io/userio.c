@@ -90,3 +90,11 @@ int parse_int(int* res, const char* src)
         return BAD_INPUT;
     return SUCCESS;
 }
+
+int parse_string(char** res, const char* str)
+{
+    *res = dup_string(str);
+    if (*res == NULL)
+        return MEM_ERR;
+    return SUCCESS;
+}

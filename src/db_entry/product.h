@@ -29,4 +29,6 @@ product_t init_product(void);
  */
 void free_product(product_t* product);
 
+bool product_valid(const product_t* product);
+
 #endif

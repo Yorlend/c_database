@@ -17,5 +17,6 @@
 #define INVALID_CONDITION       13
 #define UNKNOWN_COND_TYPE       14
 #define INVALID_COND_TYPE       15
+#define INVALID_SET_FORMAT      16
 
 #endif

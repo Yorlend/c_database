@@ -7,6 +7,6 @@
  * @param command_line строка с командой
  * @return int код ошибки
  */
-int db_cmd(const char* command_line);
+int db_cmd(char* command_line);
 
 #endif

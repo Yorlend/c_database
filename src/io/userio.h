@@ -41,4 +41,13 @@ char* dup_nstring(const char* str, size_t n);
  */
 int parse_int(int* res, const char* src);
 
+/**
+ * @brief Дублирует строку с проверкой на ошибки
+ * 
+ * @param res результат
+ * @param str исходная строка
+ * @return int код ошибки
+ */
+int parse_string(char** res, const char* str);
+
 #endif
