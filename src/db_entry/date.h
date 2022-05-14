@@ -1,6 +1,8 @@
 #ifndef __DATE_H__
 #define __DATE_H__
 
+#include <stdbool.h>
+
 // длина строки с датой
 #define DATE_LEN 10
 
@@ -35,5 +37,7 @@ int parse_date(date_t* dst, const char* src);
  * @return int код ошибки
  */
 int date_to_str(char* dst, const date_t* src);
+
+bool date_valid(const date_t* date);
 
 #endif

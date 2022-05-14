@@ -83,3 +83,37 @@ int date_to_str(char* dst, const date_t* src)
     snprintf(dst, DATE_LEN + 1, "%02d.%02d.%04d",
         src->day, src->month, src->year);
 }
+
+static inline bool is_leap_year(int year)
+{
+    return year % 400 == 0 || (year % 100 != 0 && year % 4 == 0);
+}
+
+bool date_valid(const date_t* date)
+{
+    if (date->day < 1 || 31 < date->day)
+        return false;
+
+    if (date->month < 1 || 12 < date->month)
+        return false;
+    
+    if (date->year < 1896 || 2021 < date->year)
+        return false;
+
+    if (date->month == 2)
+    {
+        if (is_leap_year(date->year))
+        {
+            if (date->day > 29)
+                return false;
+        }
+        else if (date->day > 28)
+            return false;
+    }
+
+    if ((date->month - 1 + (date->month > 6)) % 2 == 1)
+        if (date->day > 30)
+            return false;
+
+    return true; 
+}

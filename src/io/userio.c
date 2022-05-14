@@ -22,7 +22,7 @@ ssize_t getline_win(char** lineptr, size_t* n, FILE* stream)
 
     if (bufptr == NULL)
     {
-        bufptr = malloc(BASE_BUFFER_SIZE);
+        bufptr = malloc(BASE_BUFFER_SIZE * sizeof(char));
         if (bufptr == NULL)
             return -1;
         track_malloc();
@@ -36,7 +36,7 @@ ssize_t getline_win(char** lineptr, size_t* n, FILE* stream)
         if (p - bufptr > size - 1)
         {
             size += DELTA_BUFFER_SIZE;
-            bufptr = realloc(bufptr, size);
+            bufptr = realloc(bufptr, size * sizeof(char));
             if (bufptr == NULL)
                 return -1;
             track_realloc();
@@ -57,11 +57,23 @@ ssize_t getline_win(char** lineptr, size_t* n, FILE* stream)
 
 char* dup_string(const char* str)
 {
-    char* res = malloc(strlen(str) + 1);
+    char* res = malloc((strlen(str) + 1) * sizeof(char));
     if (res != NULL)
     {
         track_malloc();
         strcpy(res, str);
+    }
+    return res;
+}
+
+char* dup_nstring(const char* str, size_t n)
+{
+    char* res = malloc((n + 1) * sizeof(char));
+    if (res != NULL)
+    {
+        track_malloc();
+        strncpy(res, str, n);
+        res[n] = '\0';
     }
     return res;
 }

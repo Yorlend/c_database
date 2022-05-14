@@ -22,6 +22,17 @@ ssize_t getline_win(char** lineptr, size_t* n, FILE* stream);
 char* dup_string(const char* str);
 
 /**
+ * @brief Дублирует первые n символов строки в новую область памяти
+ * 
+ * В конец помещается символ конца строки
+ * 
+ * @param str строка для копирования
+ * @param n количество символов
+ * @return char* новый буфер с копией строки
+ */
+char* dup_nstring(const char* str, size_t n);
+
+/**
  * @brief Считывает число из строки
  * 
  * @param res результат
