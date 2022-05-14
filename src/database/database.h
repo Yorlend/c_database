@@ -26,6 +26,15 @@ int db_insert(const pair_array_t* pairs);
 int db_select(const char* fields, const cond_array_t* conds);
 
 /**
+ * @brief Обновляет поля товаров в базе данных
+ * 
+ * @param pairs массив пар 'поле=значение'
+ * @param conds массив условий фильтрации
+ * @return int код ошибки
+ */
+int db_update(const pair_array_t* pairs, const cond_array_t* conds);
+
+/**
  * @brief Удаляет товары удовлетворяющие всем условиям
  * 
  * @param conds массив условий фильтрации

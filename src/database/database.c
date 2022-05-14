@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <string.h>
+#include <stdlib.h>
 #include "error_codes.h"
 #include "mem_track/memtrack.h"
 #include "list/list.h"
@@ -11,30 +12,16 @@
 
 list_t entry_list;
 
-// static bool fields_format_valid(const char** pairs, size_t size)
-// {
-//     for (size_t i = 0; i < size; i++)
-//         if (strchr(pairs[i], '=') == NULL)
-//             return false;
 
-//     return true;
-// }
+static bool has_duplicate_fields(const pair_array_t* pairs)
+{
+    for (size_t i = 0; i < pairs->size; i++)
+        for (size_t j = i + 1; j < pairs->size; j++)
+            if (strcmp(pairs->data[i].field, pairs->data[j].field) == 0)
+                return true;
 
-// static bool has_duplicate_fields(const char** pairs, size_t size)
-// {
-//     for (size_t i = 0; i < size; i++)
-//     {
-//         int eq_pos_i = strchr(pairs[i], '=') - pairs[i];
-//         for (size_t j = i + 1; j < size; j++)
-//         {
-//             int eq_pos_j = strchr(pairs[j], '=') - pairs[j];
-//             if (eq_pos_i == eq_pos_j && strncmp(pairs[i], pairs[j], eq_pos_i) == 0)
-//                 return true;
-//         }
-//     }
-
-//     return false;
-// }
+    return false;
+}
 
 int construct_product(product_t* product, const pair_array_t* pairs)
 {
@@ -72,14 +59,19 @@ int db_insert(const pair_array_t* pairs)
     if (pairs == NULL)
         return INVALID_PARAMS;
     
-    ///TODO: check duplicates
-    // if (has_duplicate_fields(pairs))
-    //     return DUPLICATE_FIELDS;
+    if (pairs->size != 7)
+        return INVALID_FIELDS_COUNT;
+
+    if (has_duplicate_fields(pairs))
+        return DUPLICATE_FIELDS;
 
     product_t product = init_product();
     int status = construct_product(&product, pairs);
     if (status == SUCCESS)
         status = push_back(&entry_list, &product);
+
+    if (status == SUCCESS)
+        printf("insert: %zu\n", db_rows_count());
 
     return status;
 }
@@ -179,7 +171,84 @@ int db_select(const char* fields, const cond_array_t* conds)
             output_product_fields(fields, &node->data);
     }
 
+    return status;
+}
+
+///TODO: move to utils
+static int update_string(char** res, const char* str)
+{
+    char* new = realloc(*res, (strlen(str) + 1) * sizeof(char));
+    if (new == NULL)
+        return MEM_ERR;
+    track_realloc();
+
+    strcpy(*res, str);
     return SUCCESS;
+}
+
+static int update_product_field(product_t* product, const pair_t* pair)
+{
+    int status = SUCCESS;
+
+    if (strcmp(pair->field, "comes") == 0)
+        status = parse_date(&product->comes, pair->value);
+    else if (strcmp(pair->field, "sender") == 0)
+        status = update_string(&product->sender, pair->value);
+    else if (strcmp(pair->field, "name") == 0)
+        status = update_string(&product->name, pair->value);
+    else if (strcmp(pair->field, "weight") == 0)
+        status = parse_int(&product->weight, pair->value);
+    else if (strcmp(pair->field, "count") == 0)
+        status = parse_int(&product->count, pair->value);
+    else if (strcmp(pair->field, "images") == 0)
+        status = parse_image_set(&product->images, pair->value);
+    else if (strcmp(pair->field, "worker") == 0)
+        status = update_string(&product->worker, pair->value);
+    else
+        status = UNKNOWN_FIELD;
+
+    return status;
+}
+
+static int update_product_fields(product_t* product, const pair_array_t* pairs)
+{
+    int status = SUCCESS;
+    for (size_t i = 0; status == SUCCESS && i < pairs->size; i++)
+        status = update_product_field(product, pairs->data + i);
+    return status;
+}
+
+int db_update(const pair_array_t* pairs, const cond_array_t* conds)
+{
+    if (pairs == NULL || conds == NULL)
+        return INVALID_PARAMS;
+
+    int status = SUCCESS;
+
+    size_t count = 0;
+    for (node_t* node = entry_list.head; status == SUCCESS && node != NULL; node = node->next)
+    {
+        bool match_flag = true;
+        for (size_t i = 0; status == SUCCESS && match_flag && i < conds->size; i++)
+        {
+            bool tmp;
+            status = cond_match(&tmp, conds->data + i, &node->data);
+            if (status == SUCCESS)
+                match_flag = match_flag && tmp;
+        }
+
+        // обновить поля товара подходящего по условиям поиска
+        if (status == SUCCESS && match_flag)
+        {
+            status = update_product_fields(&node->data, pairs);
+            count++;
+        }
+    }
+
+    if (status == SUCCESS)
+        printf("update: %zu\n", count);
+
+    return status;
 }
 
 int db_delete(const cond_array_t* conds)
@@ -296,7 +365,8 @@ int db_unique(const char* fields)
             node1 = node1->next;
     }
 
-    printf("uniq: %zu\n", count);
+    if (status == SUCCESS)
+        printf("uniq: %zu\n", count);
     return status;
 }
 

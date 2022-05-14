@@ -42,6 +42,31 @@ static int execute_select(char* args_str)
     return status;
 }
 
+static int execute_update(char* args_str)
+{
+    pair_array_t pairs = init_pair_array();
+    cond_array_t conds = init_cond_array();
+
+    char* cond_str = strchr(args_str, ' ');
+    if (cond_str != NULL)
+    {
+        *cond_str++ = '\0';
+        int status = parse_cond_array(&conds, cond_str);
+        if (status != SUCCESS)
+            return status;
+    }
+
+    int status = parse_pair_array(&pairs, args_str);
+    if (status == SUCCESS)
+    {
+        status = db_update(&pairs, &conds);
+        free_pair_array(&pairs);
+    }
+
+    free_cond_array(&conds);
+    return status;
+}
+
 static int execute_delete(char* args_str)
 {
     cond_array_t conds = init_cond_array();
@@ -78,6 +103,8 @@ int db_cmd(char* command_line)
         status = execute_insert(args_str);
     else if (strcmp(command_line, "select") == 0)
         status = execute_select(args_str);
+    else if (strcmp(command_line, "update") == 0)
+        status = execute_update(args_str);
     else if (strcmp(command_line, "delete") == 0)
         status = execute_delete(args_str);
     else if (strcmp(command_line, "uniq") == 0)
