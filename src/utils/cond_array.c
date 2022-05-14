@@ -41,13 +41,7 @@ int parse_cond_array(cond_array_t* arr, char* str)
     {
         char* end_pos = strchr(str, ' ');
         if (end_pos != NULL)
-            end_pos = strchr(end_pos + 1, ' ');
-        if (end_pos != NULL)
-            while (*end_pos != ',')
-                end_pos--;
-        else
-            end_pos = str + strlen(str);
-        *end_pos = '\0';
+            *end_pos = '\0';
 
         status = parse_cond(arr->data + i, str);
         str = end_pos + 1;

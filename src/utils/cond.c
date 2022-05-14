@@ -115,7 +115,7 @@ static int apply_to_int(bool* result, const cond_t* cond, int value)
 {
     int res;
     int status = parse_int(&res, cond->value);
-    if (status == SUCCESS)
+    if (status != SUCCESS)
         return status;
     
     switch (cond->type)

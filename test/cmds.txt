@@ -1,0 +1,29 @@
+insert sender=Vova,name=sugar,count=13,weight=3,images=[],comes='12.02.2022',worker=Boris
+insert sender=Misha,name=car,count=1,weight=1000,images=['inflammable'],comes='30.07.2022',worker=Boris
+insert worker=Anton,sender=Misha,name=Axe,weight=10,count=1,comes='20.06.2022',images=['toxic','fragile']
+
+select sender,name count==13
+select name,weight,count,comes images/include/['toxic']
+
+insert sender=Anton,name=Notebook,weight=404,count=1,comes='13.07.2023',images=['fragile','inflammable'],worker=Vova
+
+select name images/in/['fragile','toxic','inflammable']
+
+delete images==['inflammable']
+delete images==['inflammable']
+
+wrong! wrong! wrong! wrong! wrong! wrong! wrong! wrong!
+
+select name images/in/['fragile','toxic','inflammable']
+
+insert worker=Vova,name=bicycle,weight=30,count=1,comes='21.09.2022',images=[],sender=Anton
+
+select worker,sender
+uniq worker,sender
+select worker,sender
+
+update weight=60 name==Axe
+
+select name,weight,sender name==Axe
+
+select weight weight>10 weight<100

@@ -25,6 +25,7 @@ int read_cmd_file(FILE* file)
         status = db_cmd(buffer);
         if (status != 0)
             printf("status: %d\n", status);
+        status = SUCCESS;
     }
 
     free(buffer);

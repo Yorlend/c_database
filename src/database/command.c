@@ -5,6 +5,7 @@
 #include "database.h"
 #include "error_codes.h"
 #include "utils/pair_array.h"
+#include "io/userio.h"
 
 
 static int execute_insert(char* args_str)
@@ -87,14 +88,21 @@ static int execute_unique(const char* fields)
 
 int db_cmd(char* command_line)
 {
-    // printf("command: %s\n", command_line);
-
     if (command_line == NULL)
         return INVALID_PARAMS;
+
+    char* dup_cmd = dup_nstring(command_line, 20);
+    if (dup_cmd == NULL)
+        return MEM_ERR;
     
     char* args_str = strchr(command_line, ' ');
     if (args_str == NULL)
+    {
+        printf("incorrect: %s\n", dup_cmd);
+        free(dup_cmd);
+        track_free();
         return INVALID_COMMAND;
+    }
     *args_str = '\0';
     args_str++;
 
@@ -111,6 +119,11 @@ int db_cmd(char* command_line)
         status = execute_unique(args_str);
     else
         status = INVALID_COMMAND;
+    
+    if (status != SUCCESS)
+        printf("incorrect: %s\n", dup_cmd);
 
+    free(dup_cmd);
+    track_free();
     return status;
 }
