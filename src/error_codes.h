@@ -14,5 +14,8 @@
 #define UNKNOWN_FIELD           10
 #define INVALID_IMAGE_OPTION    11
 #define INVALID_COMMAND         12
+#define INVALID_CONDITION       13
+#define UNKNOWN_COND_TYPE       14
+#define INVALID_COND_TYPE       15
 
 #endif
