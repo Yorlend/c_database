@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="database">
+      <UniqueIdentifier>{DA91E405-C65E-3F11-EF77-2DB9DBA3749F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="db_entry">
+      <UniqueIdentifier>{BCC03122-A88D-8C2D-D1A6-7AD5BDD2C1BB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="io">
+      <UniqueIdentifier>{3D785900-2904-880B-92B2-880B7E5D880B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="list">
+      <UniqueIdentifier>{61169A7C-4D4D-9B0D-F639-8110E24F170F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mem_track">
+      <UniqueIdentifier>{38DEAA6D-A448-5FE4-ED86-108A59303D39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils">
+      <UniqueIdentifier>{169C8510-82B0-ADC1-4B32-5121B705AAF2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\database\command.h">
+      <Filter>database</Filter>
+    </ClInclude>
+    <ClInclude Include="src\database\database.h">
+      <Filter>database</Filter>
+    </ClInclude>
+    <ClInclude Include="src\db_entry\date.h">
+      <Filter>db_entry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\db_entry\image_set.h">
+      <Filter>db_entry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\db_entry\product.h">
+      <Filter>db_entry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\error_codes.h" />
+    <ClInclude Include="src\io\userio.h">
+      <Filter>io</Filter>
+    </ClInclude>
+    <ClInclude Include="src\list\list.h">
+      <Filter>list</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mem_track\memtrack.h">
+      <Filter>mem_track</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\cond.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\cond_array.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\logger.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\pair.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\pair_array.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\database\command.c">
+      <Filter>database</Filter>
+    </ClCompile>
+    <ClCompile Include="src\database\database.c">
+      <Filter>database</Filter>
+    </ClCompile>
+    <ClCompile Include="src\db_entry\date.c">
+      <Filter>db_entry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\db_entry\image_set.c">
+      <Filter>db_entry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\db_entry\product.c">
+      <Filter>db_entry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\io\userio.c">
+      <Filter>io</Filter>
+    </ClCompile>
+    <ClCompile Include="src\list\list.c">
+      <Filter>list</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.c" />
+    <ClCompile Include="src\mem_track\memtrack.c">
+      <Filter>mem_track</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\cond.c">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\cond_array.c">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\logger.c">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\pair.c">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\pair_array.c">
+      <Filter>utils</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
