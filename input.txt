@@ -22,7 +22,7 @@ select worker,sender
 uniq worker,sender
 select worker,sender
 
-update weight=60 name==Axe
+update weight=60,name=Noname name==Axe
 
 select name,weight,sender name==Axe
 

@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdio.h>
+#include "utils/logger.h"
 #include "image_set.h"
 #include "error_codes.h"
 
@@ -101,47 +102,47 @@ void print_image_set(const image_set_t* set)
 {
     bool was_any = false;
 
-    printf("[");
+    log_printf("[");
 
     if (set->fragile)
     {
-        printf("'fragile'");
+        log_printf("'fragile'");
         was_any = true;
     }
     if (set->toxic)
     {
         if (was_any)
-            printf(",");
-        printf("'toxic'");
+            log_printf(",");
+        log_printf("'toxic'");
         was_any = true;
     }
     if (set->perishable)
     {
         if (was_any)
-            printf(",");
-        printf("'perishable'");
+            log_printf(",");
+        log_printf("'perishable'");
         was_any = true;
     }
     if (set->acrid)
     {
         if (was_any)
-            printf(",");
-        printf("'acrid'");
+            log_printf(",");
+        log_printf("'acrid'");
         was_any = true;
     }
     if (set->inflammable)
     {
         if (was_any)
-            printf(",");
-        printf("'inflammable'");
+            log_printf(",");
+        log_printf("'inflammable'");
         was_any = true;
     }
     if (set->frozen)
     {
         if (was_any)
-            printf(",");
-        printf("'frozen'");
+            log_printf(",");
+        log_printf("'frozen'");
     }
 
-    printf("]");
+    log_printf("]");
 }

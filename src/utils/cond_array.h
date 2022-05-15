@@ -16,4 +16,14 @@ void free_cond_array(cond_array_t* arr);
 
 int parse_cond_array(cond_array_t* arr, char* str);
 
+/**
+ * @brief Проверка всех условий в массиве arr
+ * 
+ * @param result true, если товар подходит по всем условиям
+ * @param arr массив условий
+ * @param product товар
+ * @return int код ошибки
+ */
+int cond_array_match(bool* result, const cond_array_t* arr, const product_t* product);
+
 #endif

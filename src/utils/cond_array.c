@@ -51,3 +51,22 @@ int parse_cond_array(cond_array_t* arr, char* str)
         free_cond_array(arr);
     return status;
 }
+
+int cond_array_match(bool* result, const cond_array_t* arr, const product_t* product)
+{
+    int status = SUCCESS;
+    bool match_flag = true;
+
+    for (size_t i = 0; status == SUCCESS && match_flag && i < arr->size; i++)
+    {
+        bool tmp;
+        status = cond_match(&tmp, arr->data + i, product);
+        if (status == SUCCESS)
+            match_flag = match_flag && tmp;
+    }
+
+    if (status == SUCCESS)
+        *result = match_flag;
+    
+    return status;
+}

@@ -98,3 +98,14 @@ int parse_string(char** res, const char* str)
         return MEM_ERR;
     return SUCCESS;
 }
+
+int update_string(char** res, const char* str)
+{
+    char* new = realloc(*res, (strlen(str) + 1) * sizeof(char));
+    if (new == NULL)
+        return MEM_ERR;
+    track_realloc();
+
+    strcpy(*res, str);
+    return SUCCESS;
+}

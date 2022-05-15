@@ -50,4 +50,13 @@ int parse_int(int* res, const char* src);
  */
 int parse_string(char** res, const char* str);
 
+/**
+ * @brief Обновляет динамическую строку
+ * 
+ * @param res строка, которую необходимо обновить
+ * @param str источник
+ * @return int код ошибки
+ */
+int update_string(char** res, const char* str);
+
 #endif
