@@ -8,13 +8,13 @@
 #define BASE_BUFFER_SIZE 128
 #define DELTA_BUFFER_SIZE 128
 
-ssize_t getline_win(char** lineptr, size_t* n, FILE* stream) 
+long getline_win(char** lineptr, size_t* n, FILE* stream) 
 {
     if (lineptr == NULL || stream == NULL || n == NULL)
         return -1;
 
     char* bufptr = *lineptr;
-    size_t size = *n;
+    long size = *n;
 
     int c = fgetc(stream);
     if (c == EOF)
@@ -101,10 +101,11 @@ int parse_string(char** res, const char* str)
 
 int update_string(char** res, const char* str)
 {
-    char* new = realloc(*res, (strlen(str) + 1) * sizeof(char));
-    if (new == NULL)
+    char* new_ptr = realloc(*res, (strlen(str) + 1) * sizeof(char));
+    if (new_ptr == NULL)
         return MEM_ERR;
     track_realloc();
+    *res = new_ptr;
 
     strcpy(*res, str);
     return SUCCESS;

@@ -9,9 +9,9 @@
  * @param lineptr указатель на указатель на строку
  * @param n количество записываемых символов или 0
  * @param stream файловый указатель
- * @return ssize_t количество считанных символов
+ * @return long количество считанных символов
  */
-ssize_t getline_win(char** lineptr, size_t* n, FILE* stream);
+long getline_win(char** lineptr, size_t* n, FILE* stream);
 
 /**
  * @brief Дублирует строку в новую область памяти

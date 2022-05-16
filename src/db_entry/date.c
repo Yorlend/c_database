@@ -91,7 +91,7 @@ int parse_date(date_t* dst, const char* src)
 
 int date_to_str(char* dst, const date_t* src)
 {
-    snprintf(dst, DATE_LEN + 1, "'%02d.%02d.%04d'",
+    snprintf(dst, DATE_LEN, "'%02d.%02d.%04d'",
         src->day, src->month, src->year);
 }
 

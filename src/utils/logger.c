@@ -7,7 +7,7 @@
 static size_t files_count;
 static FILE** log_files = NULL; // stdout + выходной файл
 
-int log_free(void)
+void log_free(void)
 {
     if (log_files != NULL)
     {
@@ -40,14 +40,14 @@ int log_add_file(FILE* fp)
 int log_printf(const char* fmt, ...)
 {
     int status = SUCCESS;
-    va_list va_list;
+    va_list va_lst;
 
     for (size_t i = 0; status == SUCCESS && i < files_count; i++)
     {
-        va_start(va_list, fmt);
-        if (vfprintf(log_files[i], fmt, va_list) < 0)
+        va_start(va_lst, fmt);
+        if (vfprintf(log_files[i], fmt, va_lst) < 0)
             status = OUTPUT_ERROR;
-        va_end(va_list);
+        va_end(va_lst);
     }
 
     return status;

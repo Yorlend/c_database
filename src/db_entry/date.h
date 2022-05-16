@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 // длина строки с датой
-#define DATE_LEN 12
+#define DATE_LEN 13
 
 typedef struct
 {
