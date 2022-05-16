@@ -43,6 +43,7 @@ int dump_memtrackf(FILE* file)
         memory_manager.realloc_calls,
         memory_manager.calloc_calls,
         memory_manager.free_calls);
+    return SUCCESS;
 }
 
 int dump_memtrack(const char* filename)

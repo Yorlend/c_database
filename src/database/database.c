@@ -107,16 +107,21 @@ static int output_product_field(const char* field, const product_t* product)
 
 static int output_product_fields(const char* fields, const product_t* product)
 {
-    while (true)
+    int status = SUCCESS;
+    while (status == SUCCESS)
     {
-        output_product_field(fields, product);
+        status = output_product_field(fields, product);
+        if (status != SUCCESS)
+            break;
         fields = strchr(fields, ',');
         if (fields == NULL)
             break;
         log_printf(" ");
         fields++;
     }
+
     log_printf("\n");
+    return status;
 }
 
 static int count_matching(size_t* count, const cond_array_t* conds)
