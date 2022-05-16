@@ -34,18 +34,13 @@ int pair_to_str(char** dst, const pair_t* src)
     if (dst == NULL || src == NULL)
         return INVALID_PARAMS;
 
-    size_t buf_size = snprintf(NULL, 0, "%s=%s",
-        src->field, src->value);
-
+    size_t buf_size = snprintf(NULL, 0, "%s=%s", src->field, src->value);
     *dst = malloc(buf_size);
-
     if (*dst == NULL)
         return MEM_ERR;
-
     track_malloc();
 
-    snprintf(*dst, buf_size + 1, "%s=%s",
-        src->field, src->value);
+    snprintf(*dst, buf_size + 1, "%s=%s", src->field, src->value);
 
     return SUCCESS;
 }

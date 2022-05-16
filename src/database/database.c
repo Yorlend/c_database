@@ -113,10 +113,10 @@ static int output_product_fields(const char* fields, const product_t* product)
         fields = strchr(fields, ',');
         if (fields == NULL)
             break;
-        printf(" ");
+        log_printf(" ");
         fields++;
     }
-    printf("\n");
+    log_printf("\n");
 }
 
 static int count_matching(size_t* count, const cond_array_t* conds)
@@ -247,57 +247,6 @@ int db_delete(const cond_array_t* conds)
 
     if (status == SUCCESS)
         log_printf("delete: %zu\n", count);
-
-    return SUCCESS;
-}
-
-static int cmp_by_field(bool *eql, const char* field, const product_t* product1, const product_t* product2)
-{
-    if (strncmp(field, "comes", 5) == 0)
-        *eql = date_eq(&product1->comes, &product2->comes);
-    else if (strncmp(field, "sender", 6) == 0)
-        *eql = strcmp(product1->sender, product2->sender) == 0;
-    else if (strncmp(field, "name", 4) == 0)
-        *eql = strcmp(product1->name, product2->name) == 0;
-    else if (strncmp(field, "weight", 6) == 0)
-        *eql = product1->weight == product2->weight;
-    else if (strncmp(field, "count", 5) == 0)
-        *eql = product1->count == product2->count;
-    else if (strncmp(field, "images", 6) == 0)
-        *eql = image_set_eq(&product1->images, &product2->images);
-    else if (strncmp(field, "worker", 6) == 0)
-        *eql = strcmp(product1->worker, product2->worker) == 0;
-    else
-        return UNKNOWN_FIELD;
-
-    return SUCCESS;
-}
-
-/**
- * @brief Сравнивает два товара по переданным полям
- * 
- * @param eql true, если равны
- * @param fields строка со списком полей в формате 'field1,field2,...'
- * @param product1 
- * @param product2 
- * @return int код ошибки
- */
-static int cmp_by_fields(bool *eql, const char* fields, const product_t* product1, const product_t* product2)
-{
-    *eql = true;
-    while (*eql)
-    {
-        bool tmp;
-        int status = cmp_by_field(&tmp, fields, product1, product2);
-        if (status != SUCCESS)
-            return status;
-        *eql = *eql && tmp;
-
-        fields = strchr(fields, ',');
-        if (fields == NULL)
-            break;
-        fields++;
-    }
 
     return SUCCESS;
 }

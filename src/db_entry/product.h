@@ -31,4 +31,15 @@ void free_product(product_t* product);
 
 bool product_valid(const product_t* product);
 
+/**
+ * @brief Сравнивает два товара по переданным полям
+ * 
+ * @param eql true, если равны
+ * @param fields строка со списком полей в формате 'field1,field2,...'
+ * @param product1 
+ * @param product2 
+ * @return int код ошибки
+ */
+int cmp_by_fields(bool *eql, const char* fields, const product_t* product1, const product_t* product2);
+
 #endif
