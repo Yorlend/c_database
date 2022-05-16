@@ -1,9 +1,8 @@
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "date.h"
 #include "error_codes.h"
-
-#include <stdio.h>
-#include <ctype.h>
-#include <stdlib.h>
 
 date_t init_date()
 {
@@ -91,8 +90,12 @@ int parse_date(date_t* dst, const char* src)
 
 int date_to_str(char* dst, const date_t* src)
 {
+    if (dst == NULL || src == NULL)
+        return INVALID_PARAMS;
+
     snprintf(dst, DATE_LEN, "'%02d.%02d.%04d'",
         src->day, src->month, src->year);
+    return SUCCESS;
 }
 
 static inline bool is_leap_year(int year)
@@ -107,9 +110,6 @@ bool date_valid(const date_t* date)
 
     if (date->month < 1 || 12 < date->month)
         return false;
-    
-    // if (date->year < 1896 || 2021 < date->year)
-    //     return false;
 
     if (date->month == 2)
     {
